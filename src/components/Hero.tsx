@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import linqLogo from "@/assets/linq-logo.jpg";
+import linqIcon from "@/assets/linq-icon.jpg";
 
 export const Hero = () => {
   const scrollToContact = () => {
@@ -15,9 +15,9 @@ export const Hero = () => {
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
           <div className="mb-8 flex justify-center">
             <img 
-              src={linqLogo} 
+              src={linqIcon} 
               alt="Linq Systems" 
-              className="h-16 md:h-20 object-contain"
+              className="h-20 md:h-24 object-contain rounded-2xl"
             />
           </div>
           
