@@ -60,12 +60,17 @@ export const Contact = () => {
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div ref={titleAnimation.ref as React.RefObject<HTMLDivElement>} className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}>
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               בואו נתחיל - <span className="text-primary">שיחת אפיון חינם לגמרי</span>
             </h2>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              30 דקות שיכולות לשנות את הדרך שבה אתם מנהלים את העסק. ללא עלות, ללא התחייבות.
-            </p>
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl leading-relaxed">
+                30 דקות שיכולות לשנות את הדרך שבה אתם מנהלים את העסק
+              </p>
+              <p className="text-xl md:text-2xl text-primary font-medium">
+                ללא עלות • ללא התחייבות
+              </p>
+            </div>
           </div>
 
           <div ref={contentAnimation.ref as React.RefObject<HTMLDivElement>} className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${contentAnimation.isVisible ? 'visible' : ''}`}>
@@ -131,7 +136,16 @@ export const Contact = () => {
                   {isSubmitting ? "שולח..." : "שלחו ונחזור אליכם בהקדם"}
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
-                  בשליחת הטופס אתם מאשרים שקראתם את מדיניות הפרטיות שלנו
+                  בשליחת הטופס אתם מאשרים שקראתם את{" "}
+                  <a 
+                    href="/privacy-policy" 
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary hover:underline"
+                  >
+                    מדיניות הפרטיות
+                  </a>
+                  {" "}שלנו
                 </p>
               </form>
             </div>

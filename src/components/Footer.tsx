@@ -41,6 +41,11 @@ export const Footer = () => {
                     צור קשר
                   </button>
                 </li>
+                <li>
+                  <a href="/privacy-policy" target="_blank" rel="noopener noreferrer" className="hover:text-background transition-colors">
+                    מדיניות פרטיות
+                  </a>
+                </li>
               </ul>
             </div>
 
