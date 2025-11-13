@@ -37,7 +37,7 @@ export const Navigation = () => {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isScrolled
-          ? "bg-background/95 backdrop-blur-md shadow-soft border-b border-border"
+          ? "bg-background/80 backdrop-blur-lg shadow-soft border-b border-border/50"
           : "bg-transparent"
       }`}
     >
@@ -97,7 +97,7 @@ export const Navigation = () => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border bg-background/95 backdrop-blur-md">
+          <div className="lg:hidden py-4 border-t border-border bg-background/80 backdrop-blur-lg">
             <div className="flex flex-col gap-2">
               {menuItems.map((item) => (
                 <Button
