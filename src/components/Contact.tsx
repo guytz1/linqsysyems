@@ -4,27 +4,30 @@ import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
-
 export const Contact = () => {
-  const { toast } = useToast();
+  const {
+    toast
+  } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: ""
   });
-
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     toast({
       title: "תודה על פניתך!",
-      description: "נחזור אליך בהקדם האפשרי לתיאום שיחת האפיון החינמית",
+      description: "נחזור אליך בהקדם האפשרי לתיאום שיחת האפיון החינמית"
     });
-    setFormData({ name: "", email: "", phone: "", message: "" });
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      message: ""
+    });
   };
-
-  return (
-    <section id="contact" className="py-20 bg-background">
+  return <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           <div className="text-center mb-16">
@@ -67,7 +70,7 @@ export const Contact = () => {
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-primary" />
-                  <span className="text-lg">info@linq-systems.com</span>
+                  <span className="text-lg">linq.systems.team@gmail.com</span>
                 </div>
               </div>
             </div>
@@ -75,48 +78,30 @@ export const Contact = () => {
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div>
-                  <Input
-                    placeholder="שם מלא *"
-                    value={formData.name}
-                    onChange={(e) => setFormData({...formData, name: e.target.value})}
-                    required
-                    className="text-right"
-                  />
+                  <Input placeholder="שם מלא *" value={formData.name} onChange={e => setFormData({
+                  ...formData,
+                  name: e.target.value
+                })} required className="text-right" />
                 </div>
                 <div>
-                  <Input
-                    type="email"
-                    placeholder="אימייל *"
-                    value={formData.email}
-                    onChange={(e) => setFormData({...formData, email: e.target.value})}
-                    required
-                    className="text-right"
-                  />
+                  <Input type="email" placeholder="אימייל *" value={formData.email} onChange={e => setFormData({
+                  ...formData,
+                  email: e.target.value
+                })} required className="text-right" />
                 </div>
                 <div>
-                  <Input
-                    type="tel"
-                    placeholder="טלפון *"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                    required
-                    className="text-right"
-                  />
+                  <Input type="tel" placeholder="טלפון *" value={formData.phone} onChange={e => setFormData({
+                  ...formData,
+                  phone: e.target.value
+                })} required className="text-right" />
                 </div>
                 <div>
-                  <Textarea
-                    placeholder="ספרו לנו קצת על העסק שלכם והאתגרים שאתם מתמודדים איתם (אופציונלי)"
-                    value={formData.message}
-                    onChange={(e) => setFormData({...formData, message: e.target.value})}
-                    rows={4}
-                    className="text-right"
-                  />
+                  <Textarea placeholder="ספרו לנו קצת על העסק שלכם והאתגרים שאתם מתמודדים איתם (אופציונלי)" value={formData.message} onChange={e => setFormData({
+                  ...formData,
+                  message: e.target.value
+                })} rows={4} className="text-right" />
                 </div>
-                <Button 
-                  type="submit" 
-                  size="lg" 
-                  className="w-full text-lg py-6"
-                >
+                <Button type="submit" size="lg" className="w-full text-lg py-6">
                   שלחו ונחזור אליכם בהקדם
                 </Button>
                 <p className="text-xs text-muted-foreground text-center">
@@ -127,6 +112,5 @@ export const Contact = () => {
           </div>
         </div>
       </div>
-    </section>
-  );
+    </section>;
 };
