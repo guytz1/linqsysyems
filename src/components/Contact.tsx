@@ -142,11 +142,12 @@ export const Contact = () => {
                 {/* טלפון — כוכבית בצד הנכון */}
                 <Input
                   type="tel"
-                  placeholder="טלפון *"
+                  placeholder={'טלפון \u200E*'}
+                  dir="rtl"
+                  className="text-right"
                   value={formData.phone}
                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                   required
-                  className="text-right"
                   disabled={isSubmitting}
                 />
 
