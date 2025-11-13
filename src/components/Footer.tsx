@@ -28,7 +28,7 @@ export const Footer = () => {
             <div>
               <h4 className="font-bold mb-4">יצירת קשר</h4>
               <ul className="space-y-2 text-background/80">
-                <li>052-1234567</li>
+                <li>054-3521115</li>
                 <li>info@linq-systems.com</li>
               </ul>
             </div>

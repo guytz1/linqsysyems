@@ -63,7 +63,7 @@ export const Contact = () => {
               <div className="space-y-4">
                 <div className="flex items-center gap-3">
                   <Phone className="h-5 w-5 text-primary" />
-                  <span className="text-lg">052-1234567</span>
+                  <span className="text-lg">054-3521115</span>
                 </div>
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-primary" />
