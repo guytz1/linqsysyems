@@ -5,61 +5,66 @@ import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
+
 export const Contact = () => {
-  const {
-    toast
-  } = useToast();
+  const { toast } = useToast();
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: ""
   });
+
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const titleAnimation = useScrollAnimation();
   const contentAnimation = useScrollAnimation();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-    try {
-      // Send data to Monday.com webhook
-      const mondayWebhookUrl = "https://forms.monday.com/forms/b9d612b00610ca870ffb574f227aa594";
-      const formDataToSend = new FormData();
-      formDataToSend.append("name", formData.name);
-      formDataToSend.append("email", formData.email);
-      formDataToSend.append("phone", formData.phone);
-      formDataToSend.append("message", formData.message);
 
-      // Submit to Monday.com
-      await fetch(mondayWebhookUrl, {
+    try {
+      const makeWebhookUrl = "https://hook.eu2.make.com/jw07ir5o4dp7238s5pex16a8cbmovw8n";
+
+      await fetch(makeWebhookUrl, {
         method: "POST",
-        body: formDataToSend,
-        mode: "no-cors" // Monday.com forms typically require no-cors
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+
       toast({
-        title: "תודה על פניתך!",
-        description: "נחזור אליך בהקדם האפשרי לתיאום שיחת האפיון החינמית"
+        title: "תודה על פנייתך!",
+        description: "נחזור אליך בהקדם כדי לתאם שיחת אפיון חינמית",
       });
+
       setFormData({
         name: "",
         email: "",
         phone: "",
-        message: ""
+        message: "",
       });
     } catch (error) {
       toast({
         title: "שגיאה",
         description: "אירעה שגיאה בשליחת הטופס. אנא נסו שוב.",
-        variant: "destructive"
+        variant: "destructive",
       });
     } finally {
       setIsSubmitting(false);
     }
   };
-  return <section id="contact" className="py-20 bg-background">
+
+  return (
+    <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
-          <div ref={titleAnimation.ref as React.RefObject<HTMLDivElement>} className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}>
+          <div
+            ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? "visible" : ""}`}
+          >
             <h2 className="text-3xl md:text-5xl font-bold mb-8">
               בואו נתחיל - <span className="text-primary">שיחת אפיון חינם לגמרי</span>
             </h2>
@@ -67,13 +72,14 @@ export const Contact = () => {
               <p className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl leading-relaxed">
                 30 דקות שיכולות לשנות את הדרך שבה אתם מנהלים את העסק
               </p>
-              <p className="text-xl md:text-2xl text-primary font-medium">
-                ללא עלות • ללא התחייבות
-              </p>
+              <p className="text-xl md:text-2xl text-primary font-medium">ללא עלות • ללא התחייבות</p>
             </div>
           </div>
 
-          <div ref={contentAnimation.ref as React.RefObject<HTMLDivElement>} className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${contentAnimation.isVisible ? 'visible' : ''}`}>
+          <div
+            ref={contentAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${contentAnimation.isVisible ? "visible" : ""}`}
+          >
             <div className="space-y-8">
               <div className="bg-primary/5 p-8 rounded-2xl border border-primary/20">
                 <h3 className="text-2xl font-bold mb-6">מה קורה בשיחה?</h3>
@@ -111,46 +117,60 @@ export const Contact = () => {
 
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Input placeholder="שם מלא *" value={formData.name} onChange={e => setFormData({
-                  ...formData,
-                  name: e.target.value
-                })} required className="text-right" disabled={isSubmitting} />
-                </div>
-                <div>
-                  <Input type="email" placeholder="אימייל *" value={formData.email} onChange={e => setFormData({
-                  ...formData,
-                  email: e.target.value
-                })} required className="text-right" disabled={isSubmitting} />
-                </div>
-                <div>
-                  <Input type="tel" placeholder="טלפון *" value={formData.phone} onChange={e => setFormData({
-                  ...formData,
-                  phone: e.target.value
-                })} required className="text-right" disabled={isSubmitting} />
-                </div>
-                <div>
-                  
-                </div>
+
+                {/* שם */}
+                <Input
+                  placeholder="שם מלא *"
+                  value={formData.name}
+                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                  required
+                  className="text-right"
+                  disabled={isSubmitting}
+                />
+
+                {/* אימייל */}
+                <Input
+                  type="email"
+                  placeholder="אימייל *"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  required
+                  className="text-right"
+                  disabled={isSubmitting}
+                />
+
+                {/* טלפון — כוכבית בצד הנכון */}
+                <Input
+                  type="tel"
+                  placeholder="טלפון *"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  required
+                  className="text-right"
+                  disabled={isSubmitting}
+                />
+
                 <Button type="submit" size="lg" className="w-full text-lg py-6" disabled={isSubmitting}>
                   {isSubmitting ? "שולח..." : "שלחו ונחזור אליכם בהקדם"}
                 </Button>
+
                 <p className="text-xs text-muted-foreground text-center">
                   בשליחת הטופס אתם מאשרים שקראתם את{" "}
-                  <a 
-                    href="/privacy-policy" 
+                  <a
+                    href="/privacy-policy"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
                     מדיניות הפרטיות
-                  </a>
-                  {" "}שלנו
+                  </a>{" "}
+                  שלנו
                 </p>
               </form>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
