@@ -1,4 +1,5 @@
 import { CheckCircle2, Zap, Target, TrendingUp } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const benefits = [
   {
@@ -24,10 +25,16 @@ const benefits = [
 ];
 
 export const Solution = () => {
+  const titleAnimation = useScrollAnimation();
+  const howItWorksAnimation = useScrollAnimation();
+  
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div 
+          ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
+          className={`max-w-3xl mx-auto text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
+        >
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             הפתרון שלנו - <span className="text-primary">מערכת מחוברת אחת</span>
           </h2>
@@ -40,10 +47,13 @@ export const Solution = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto mb-16">
           {benefits.map((benefit, index) => {
             const Icon = benefit.icon;
+            const cardAnimation = useScrollAnimation();
             return (
               <div 
                 key={index}
-                className="bg-accent/50 p-8 rounded-2xl hover:shadow-elegant transition-all border border-primary/10"
+                ref={cardAnimation.ref as React.RefObject<HTMLDivElement>}
+                className={`bg-accent/50 p-8 rounded-2xl hover:shadow-elegant transition-all border border-primary/10 scroll-scale ${cardAnimation.isVisible ? 'visible' : ''}`}
+                style={{ transitionDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start gap-4">
                   <div className="bg-primary p-3 rounded-xl flex-shrink-0">
@@ -61,7 +71,10 @@ export const Solution = () => {
           })}
         </div>
 
-        <div className="max-w-4xl mx-auto bg-gradient-to-br from-primary/5 to-accent/50 p-12 rounded-3xl border border-primary/20">
+        <div 
+          ref={howItWorksAnimation.ref as React.RefObject<HTMLDivElement>}
+          className={`max-w-4xl mx-auto bg-gradient-to-br from-primary/5 to-accent/50 p-12 rounded-3xl border border-primary/20 scroll-fade-in ${howItWorksAnimation.isVisible ? 'visible' : ''}`}
+        >
           <h3 className="text-2xl md:text-3xl font-bold text-center mb-8">
             איך זה עובד?
           </h3>
