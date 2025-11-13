@@ -1,4 +1,5 @@
 import { AlertCircle, Users, FileText, Calendar } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const problems = [
   {
@@ -24,10 +25,15 @@ const problems = [
 ];
 
 export const Problem = () => {
+  const titleAnimation = useScrollAnimation();
+  
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
-        <div className="max-w-3xl mx-auto text-center mb-16">
+        <div 
+          ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
+          className={`max-w-3xl mx-auto text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
+        >
           <h2 className="text-3xl md:text-5xl font-bold mb-6">
             האם זה מוכר לכם?
           </h2>
@@ -39,10 +45,13 @@ export const Problem = () => {
         <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
           {problems.map((problem, index) => {
             const Icon = problem.icon;
+            const cardAnimation = useScrollAnimation();
             return (
               <div 
                 key={index}
-                className="bg-background p-8 rounded-2xl shadow-soft hover:shadow-elegant transition-all border border-border"
+                ref={cardAnimation.ref as React.RefObject<HTMLDivElement>}
+                className={`bg-background p-8 rounded-2xl shadow-soft hover:shadow-elegant transition-all border border-border scroll-scale ${cardAnimation.isVisible ? 'visible' : ''}`}
+                style={{ transitionDelay: `${index * 0.1}s` }}
               >
                 <div className="flex items-start gap-4">
                   <div className="bg-destructive/10 p-3 rounded-xl flex-shrink-0">

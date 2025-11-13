@@ -4,6 +4,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const faqs = [
   {
@@ -33,11 +34,17 @@ const faqs = [
 ];
 
 export const FAQ = () => {
+  const titleAnimation = useScrollAnimation();
+  const accordionAnimation = useScrollAnimation();
+  
   return (
     <section className="py-20 bg-muted/30">
       <div className="container mx-auto px-4">
         <div className="max-w-3xl mx-auto">
-          <div className="text-center mb-16">
+          <div 
+            ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
+          >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               שאלות נפוצות
             </h2>
@@ -46,7 +53,11 @@ export const FAQ = () => {
             </p>
           </div>
 
-          <Accordion type="single" collapsible className="space-y-4">
+          <div 
+            ref={accordionAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`scroll-fade-in ${accordionAnimation.isVisible ? 'visible' : ''}`}
+          >
+            <Accordion type="single" collapsible className="space-y-4">
             {faqs.map((faq, index) => (
               <AccordionItem 
                 key={index} 
@@ -61,7 +72,8 @@ export const FAQ = () => {
                 </AccordionContent>
               </AccordionItem>
             ))}
-          </Accordion>
+            </Accordion>
+          </div>
         </div>
       </div>
     </section>

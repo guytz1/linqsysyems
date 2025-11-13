@@ -1,10 +1,75 @@
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
+import { useState } from "react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const Contact = () => {
-  return <section id="contact" className="py-20 bg-background">
+  const { toast } = useToast();
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    message: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  const titleAnimation = useScrollAnimation();
+  const contentAnimation = useScrollAnimation();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      // Send data to Monday.com webhook
+      const mondayWebhookUrl = "https://forms.monday.com/forms/b9d612b00610ca870ffb574f227aa594";
+      
+      const formDataToSend = new FormData();
+      formDataToSend.append("name", formData.name);
+      formDataToSend.append("email", formData.email);
+      formDataToSend.append("phone", formData.phone);
+      formDataToSend.append("message", formData.message);
+
+      // Submit to Monday.com
+      await fetch(mondayWebhookUrl, {
+        method: "POST",
+        body: formDataToSend,
+        mode: "no-cors" // Monday.com forms typically require no-cors
+      });
+
+      toast({
+        title: "תודה על פניתך!",
+        description: "נחזור אליך בהקדם האפשרי לתיאום שיחת האפיון החינמית"
+      });
+
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: ""
+      });
+    } catch (error) {
+      toast({
+        title: "שגיאה",
+        description: "אירעה שגיאה בשליחת הטופס. אנא נסו שוב.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
-          <div className="text-center mb-16">
+          <div 
+            ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
+          >
             <h2 className="text-3xl md:text-5xl font-bold mb-6">
               בואו נתחיל - <span className="text-primary">שיחת אפיון חינם לגמרי</span>
             </h2>
@@ -13,7 +78,10 @@ export const Contact = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-12">
+          <div 
+            ref={contentAnimation.ref as React.RefObject<HTMLDivElement>}
+            className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${contentAnimation.isVisible ? 'visible' : ''}`}
+          >
             <div className="space-y-8">
               <div className="bg-primary/5 p-8 rounded-2xl border border-primary/20">
                 <h3 className="text-2xl font-bold mb-6">מה קורה בשיחה?</h3>
@@ -49,17 +117,66 @@ export const Contact = () => {
               </div>
             </div>
 
-            <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20 flex items-center justify-center">
-              <iframe 
-                src="https://forms.monday.com/forms/embed/b9d612b00610ca870ffb574f227aa594?r=euc1" 
-                width="100%" 
-                height="500" 
-                style={{ border: 0, minHeight: '500px' }}
-                title="טופס יצירת קשר"
-              />
+            <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <Input 
+                    placeholder="שם מלא *" 
+                    value={formData.name} 
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })} 
+                    required 
+                    className="text-right"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Input 
+                    type="email" 
+                    placeholder="אימייל *" 
+                    value={formData.email} 
+                    onChange={(e) => setFormData({ ...formData, email: e.target.value })} 
+                    required 
+                    className="text-right"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Input 
+                    type="tel" 
+                    placeholder="טלפון *" 
+                    value={formData.phone} 
+                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })} 
+                    required 
+                    className="text-right"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <div>
+                  <Textarea 
+                    placeholder="ספרו לנו קצת על העסק שלכם והאתגרים שאתם מתמודדים איתם (אופציונלי)" 
+                    value={formData.message} 
+                    onChange={(e) => setFormData({ ...formData, message: e.target.value })} 
+                    rows={4} 
+                    className="text-right"
+                    disabled={isSubmitting}
+                  />
+                </div>
+                <Button 
+                  type="submit" 
+                  size="lg" 
+                  className="w-full text-lg py-6"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? "שולח..." : "שלחו ונחזור אליכם בהקדם"}
+                </Button>
+                <p className="text-xs text-muted-foreground text-center">
+                  בשליחת הטופס אתם מאשרים שקראתם את מדיניות הפרטיות שלנו
+                </p>
+              </form>
             </div>
           </div>
         </div>
       </div>
-    </section>;
+    </section>
+  );
 };
