@@ -1,6 +1,13 @@
 import linqIcon from "@/assets/linq-icon.jpg";
 
 export const Footer = () => {
+  const scrollToSection = (id: string) => {
+    const element = document.getElementById(id);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   return (
     <footer className="bg-foreground text-background py-12">
       <div className="container mx-auto px-4">
@@ -19,9 +26,21 @@ export const Footer = () => {
             <div>
               <h4 className="font-bold mb-4">קישורים מהירים</h4>
               <ul className="space-y-2 text-background/80">
-                <li><a href="#" className="hover:text-background transition-colors">אודות</a></li>
-                <li><a href="#" className="hover:text-background transition-colors">שירותים</a></li>
-                <li><a href="#contact" className="hover:text-background transition-colors">צור קשר</a></li>
+                <li>
+                  <button onClick={() => scrollToSection('hero')} className="hover:text-background transition-colors">
+                    אודות
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('features')} className="hover:text-background transition-colors">
+                    שירותים
+                  </button>
+                </li>
+                <li>
+                  <button onClick={() => scrollToSection('contact')} className="hover:text-background transition-colors">
+                    צור קשר
+                  </button>
+                </li>
               </ul>
             </div>
 
