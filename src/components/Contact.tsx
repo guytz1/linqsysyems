@@ -1,32 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
-import { useState } from "react";
+
 export const Contact = () => {
-  const {
-    toast
-  } = useToast();
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    phone: "",
-    message: ""
-  });
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "תודה על פניתך!",
-      description: "נחזור אליך בהקדם האפשרי לתיאום שיחת האפיון החינמית"
-    });
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: ""
-    });
-  };
   return <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
@@ -75,39 +49,14 @@ export const Contact = () => {
               </div>
             </div>
 
-            <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
-              <form onSubmit={handleSubmit} className="space-y-6">
-                <div>
-                  <Input placeholder="שם מלא *" value={formData.name} onChange={e => setFormData({
-                  ...formData,
-                  name: e.target.value
-                })} required className="text-right" />
-                </div>
-                <div>
-                  <Input type="email" placeholder="אימייל *" value={formData.email} onChange={e => setFormData({
-                  ...formData,
-                  email: e.target.value
-                })} required className="text-right" />
-                </div>
-                <div>
-                  <Input type="tel" placeholder="טלפון *" value={formData.phone} onChange={e => setFormData({
-                  ...formData,
-                  phone: e.target.value
-                })} required className="text-right" />
-                </div>
-                <div>
-                  <Textarea placeholder="ספרו לנו קצת על העסק שלכם והאתגרים שאתם מתמודדים איתם (אופציונלי)" value={formData.message} onChange={e => setFormData({
-                  ...formData,
-                  message: e.target.value
-                })} rows={4} className="text-right" />
-                </div>
-                <Button type="submit" size="lg" className="w-full text-lg py-6">
-                  שלחו ונחזור אליכם בהקדם
-                </Button>
-                <p className="text-xs text-muted-foreground text-center">
-                  בשליחת הטופס אתם מאשרים שקראתם את מדיניות הפרטיות שלנו
-                </p>
-              </form>
+            <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20 flex items-center justify-center">
+              <iframe 
+                src="https://forms.monday.com/forms/embed/b9d612b00610ca870ffb574f227aa594?r=euc1" 
+                width="100%" 
+                height="500" 
+                style={{ border: 0, minHeight: '500px' }}
+                title="טופס יצירת קשר"
+              />
             </div>
           </div>
         </div>
