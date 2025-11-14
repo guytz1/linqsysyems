@@ -2,18 +2,27 @@ import { useEffect, useState } from "react";
 
 const ScrollPopup = () => {
   const [show, setShow] = useState(false);
+  const [lastScroll, setLastScroll] = useState(0);
   const [dismissed, setDismissed] = useState(false);
 
-  // מציג את הפופאפ אחרי 15 שניות שהמשתמש בעמוד
   useEffect(() => {
-    if (dismissed) return;
+    const handleScroll = () => {
+      const current = window.scrollY;
 
-    const timer = setTimeout(() => {
-      setShow(true);
-    }, 15000); // 15 שניות
+      // אם המשתמש כבר סגר
+      if (dismissed) return;
 
-    return () => clearTimeout(timer);
-  }, [dismissed]);
+      // הופך לגלוי רק אם המשתמש ירד לפחות 500px ואז התחיל לעלות
+      if (current > 500 && current < lastScroll - 120) {
+        setShow(true);
+      }
+
+      setLastScroll(current);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScroll, dismissed]);
 
   if (!show) return null;
 
@@ -29,7 +38,7 @@ const ScrollPopup = () => {
         boxShadow: "0 6px 25px rgba(0,0,0,0.18)",
         zIndex: 99999,
         maxWidth: "260px",
-        animation: "fadeSlideIn 0.35s ease-out",
+        animation: "fadeSlideIn 0.3s ease-out",
       }}
     >
       {/* כפתור סגירה */}
@@ -47,7 +56,6 @@ const ScrollPopup = () => {
           fontSize: "18px",
           cursor: "pointer",
         }}
-        aria-label="close popup"
       >
         ×
       </button>
@@ -74,18 +82,20 @@ const ScrollPopup = () => {
         כן! דברו איתי
       </a>
 
-      <style>{`
-        @keyframes fadeSlideIn {
-          from {
-            opacity: 0;
-            transform: translateY(20px);
+      <style>
+        {`
+          @keyframes fadeSlideIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
           }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-      `}</style>
+        `}
+      </style>
     </div>
   );
 };
