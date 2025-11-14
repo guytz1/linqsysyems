@@ -1,26 +1,26 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
-export const ScrollPopup = () => {
-  const [visible, setVisible] = useState(false);
-  const [lastScrollY, setLastScrollY] = useState(0);
+const ScrollPopup = () => {
+  const [show, setShow] = useState(false);
+  const [lastScroll, setLastScroll] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
+      const current = window.scrollY;
 
-      // משתמש גולל למעלה יותר מדי → להציג פופאפ
-      if (currentScrollY < lastScrollY - 200) {
-        setVisible(true);
+      // המשתמש גולל למעלה הרבה
+      if (current < lastScroll - 120) {
+        setShow(true);
       }
 
-      setLastScrollY(currentScrollY);
+      setLastScroll(current);
     };
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [lastScrollY]);
+  }, [lastScroll]);
 
-  if (!visible) return null;
+  if (!show) return null;
 
   return (
     <div
@@ -29,31 +29,30 @@ export const ScrollPopup = () => {
         bottom: "20px",
         right: "20px",
         background: "white",
-        border: "1px solid #ddd",
-        borderRadius: "12px",
         padding: "16px",
-        boxShadow: "0 8px 20px rgba(0,0,0,0.15)",
+        borderRadius: "12px",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.15)",
         zIndex: 9999,
       }}
     >
-      <p style={{ marginBottom: "8px", fontWeight: "600" }}>
-        פספסת משהו? רוצה שנחזור אליך?
-      </p>
+      <strong>רגע...</strong>
+      <p>לפני שאתה יוצא — רוצה שיחת אפיון חינם?</p>
 
       <a
         href="#contact"
         style={{
+          marginTop: "10px",
           display: "inline-block",
-          background: "#0059ff",
+          background: "#6b46ff",
           color: "white",
-          padding: "10px 18px",
-          borderRadius: "8px",
-          fontWeight: "600",
-          textDecoration: "none",
+          padding: "8px 16px",
+          borderRadius: "6px",
         }}
       >
-        השאירו פרטים
+        כן! דברו איתי
       </a>
     </div>
   );
 };
+
+export default ScrollPopup;
