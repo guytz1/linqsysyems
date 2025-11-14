@@ -260,13 +260,16 @@ export const Contact = () => {
 
                 <div>
   <Input
-    type="text"
-    inputMode="tel"
-  placeholder={'טלפון *\u200E'}
-    value={formData.phone}
-    onChange={(e) => handlePhoneChange(e.target.value)}
-    className={`text-right ${errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-    disabled={isSubmitting}
+  type="tel"
+  placeholder="* טלפון"
+  className="text-right"
+  dir="rtl"
+  value={formData.phone}
+  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+  required
+  disabled={isSubmitting}
+/>
+
   />
   {errors.phone && (
     <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
