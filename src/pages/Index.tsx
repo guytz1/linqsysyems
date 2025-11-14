@@ -11,38 +11,44 @@ import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
-     <ScrollPopup />
+    <>
+      {/* פופאפ גלילה למעלה */}
+      <ScrollPopup />
 
-  {/* כל שאר הסקשנים שלך */}
-  <Hero />
-  <Features />
-  <Contact />
-</>
-    <div className="min-h-screen">
-      <Navigation />
-      <div id="hero">
-        <Hero />
+      <div className="min-h-screen">
+        <Navigation />
+
+        <div id="hero">
+          <Hero />
+        </div>
+
+        <div id="problem">
+          <Problem />
+        </div>
+
+        <div id="solution">
+          <Solution />
+        </div>
+
+        <div id="features">
+          <Features />
+        </div>
+
+        <div id="testimonials">
+          <Testimonials />
+        </div>
+
+        <div id="faq">
+          <FAQ />
+        </div>
+
+        <div id="contact">
+          <Contact />
+        </div>
+
+        <Footer />
       </div>
-      <div id="problem">
-        <Problem />
-      </div>
-      <div id="solution">
-        <Solution />
-      </div>
-      <div id="features">
-        <Features />
-      </div>
-      <div id="testimonials">
-        <Testimonials />
-      </div>
-      <div id="faq">
-        <FAQ />
-      </div>
-      <div id="contact">
-        <Contact />
-      </div>
-      <Footer />
-    </div>
+    </>
   );
 };
 
