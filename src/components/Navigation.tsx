@@ -85,39 +85,60 @@ export const Navigation = () => {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors"
+            className="lg:hidden p-2 hover:bg-muted rounded-lg transition-colors relative w-10 h-10 flex items-center justify-center"
+            aria-label="תפריט"
           >
-            {isMobileMenuOpen ? (
-              <X className="h-6 w-6 text-foreground" />
-            ) : (
-              <Menu className="h-6 w-6 text-foreground" />
-            )}
+            <div className="w-6 h-5 relative flex flex-col justify-center">
+              <span
+                className={`absolute h-0.5 w-6 bg-foreground transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen
+                    ? "rotate-45 translate-y-0"
+                    : "translate-y-[-8px]"
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-6 bg-foreground transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                }`}
+              />
+              <span
+                className={`absolute h-0.5 w-6 bg-foreground transition-all duration-300 ease-in-out ${
+                  isMobileMenuOpen
+                    ? "-rotate-45 translate-y-0"
+                    : "translate-y-[8px]"
+                }`}
+              />
+            </div>
           </button>
         </div>
 
         {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="lg:hidden py-4 border-t border-border bg-background/80 backdrop-blur-lg">
-            <div className="flex flex-col gap-2">
-              {menuItems.map((item) => (
-                <Button
-                  key={item.id}
-                  variant="ghost"
-                  onClick={() => scrollToSection(item.id)}
-                  className="justify-start text-foreground hover:text-primary hover:bg-primary/10 transition-smooth"
-                >
-                  {item.label}
-                </Button>
-              ))}
+        <div
+          className={`lg:hidden overflow-hidden transition-all duration-300 ease-in-out border-t border-border bg-background/80 backdrop-blur-lg ${
+            isMobileMenuOpen
+              ? "max-h-[500px] opacity-100 py-4"
+              : "max-h-0 opacity-0 py-0"
+          }`}
+        >
+          <div className="flex flex-col gap-2 px-4">
+            {menuItems.map((item) => (
               <Button
-                onClick={() => scrollToSection("contact")}
-                className="mt-2 shadow-elegant"
+                key={item.id}
+                variant="ghost"
+                onClick={() => scrollToSection(item.id)}
+                className="justify-start text-foreground hover:text-primary hover:bg-primary/10 transition-smooth"
               >
-                קבעו פגישה חינם
+                {item.label}
               </Button>
-            </div>
+            ))}
+            <Button
+              onClick={() => scrollToSection("contact")}
+              className="mt-2 shadow-elegant"
+            >
+              קבעו פגישה חינם
+            </Button>
           </div>
-        )}
+        </div>
       </div>
     </nav>
   );
