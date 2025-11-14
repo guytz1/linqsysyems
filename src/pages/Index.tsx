@@ -12,7 +12,7 @@ import { Footer } from "@/components/Footer";
 const Index = () => {
   return (
     <>
-      {/* פופאפ גלילה למעלה */}
+      {/* פופאפ (נטען פעם אחת בכל עמוד) */}
       <ScrollPopup />
 
       <div className="min-h-screen">
