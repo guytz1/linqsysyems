@@ -45,7 +45,7 @@ export const Contact = () => {
   // ------------------ REAL-TIME VALIDATION ------------------
 
   const handleNameChange = (value: string) => {
-    setFormData({ ...formData, name: value });
+    setFormData((prev) => ({ ...prev, name: value }));
 
     if (!validateName(value)) {
       setErrors((prev) => ({
@@ -58,7 +58,7 @@ export const Contact = () => {
   };
 
   const handleEmailChange = (value: string) => {
-    setFormData({ ...formData, email: value });
+    setFormData((prev) => ({ ...prev, email: value }));
 
     if (!validateEmail(value)) {
       setErrors((prev) => ({
@@ -71,9 +71,8 @@ export const Contact = () => {
   };
 
   const handlePhoneChange = (value: string) => {
-    // מגביל רק לספרות
-    const cleaned = value.replace(/\D/g, "");
-    setFormData({ ...formData, phone: cleaned });
+    const cleaned = value.replace(/\D/g, ""); // רק ספרות
+    setFormData((prev) => ({ ...prev, phone: cleaned }));
 
     if (!validatePhone(cleaned)) {
       setErrors((prev) => ({
@@ -90,11 +89,11 @@ export const Contact = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // בדיקה סופית
-    if (!validateName(formData.name) ||
-        !validateEmail(formData.email) ||
-        !validatePhone(formData.phone)) 
-    {
+    if (
+      !validateName(formData.name) ||
+      !validateEmail(formData.email) ||
+      !validatePhone(formData.phone)
+    ) {
       toast({
         title: "שגיאה בטופס",
         description: "אנא תקנו את השגיאות בשדות המסומנים",
@@ -130,7 +129,6 @@ export const Contact = () => {
       });
 
       setErrors({ name: "", email: "", phone: "" });
-
     } catch (error) {
       toast({
         title: "שגיאה",
@@ -148,7 +146,6 @@ export const Contact = () => {
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
-
           {/* כותרת */}
           <div
             ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
@@ -228,54 +225,59 @@ export const Contact = () => {
             {/* צד ימין - טופס */}
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
-
+                {/* שם מלא */}
                 <div>
-  <Input
-  placeholder={'שם מלא *\u200E'}
-    value={formData.name}
-    onChange={(e) => handleNameChange(e.target.value)}
-    className={`text-right ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-    disabled={isSubmitting}
-  />
-  {errors.name && (
-    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-  )}
-</div>
+                  <Input
+                    placeholder="שם מלא *"
+                    value={formData.name}
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    className={`text-right ${
+                      errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                  )}
+                </div>
 
-  <Input
-    type="text"               // ← במקום email
-    inputMode="email"
-    autoComplete="email"
-  placeholder={'אימייל *\u200E'}
-    value={formData.email}
-    onChange={(e) => handleEmailChange(e.target.value)}
-    className={`text-right ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
-    disabled={isSubmitting}
-  />
-  {errors.email && (
-    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-  )}
-</div>
-
-
+                {/* אימייל */}
                 <div>
-  <Input
-  type="tel"
-  placeholder="* טלפון"
-  className="text-right"
-  dir="rtl"
-  value={formData.phone}
-  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-  required
-  disabled={isSubmitting}
-/>
+                  <Input
+                    type="text"
+                    inputMode="email"
+                    autoComplete="email"
+                    placeholder="אימייל *"
+                    value={formData.email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`text-right ${
+                      errors.email ? "border-red-500 focus-visible:ring-red-500" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
 
-  />
-  {errors.phone && (
-    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-  )}
-</div>
-
+                {/* טלפון */}
+                <div>
+                  <Input
+                    type="tel"
+                    inputMode="tel"
+                    placeholder="טלפון *"
+                    dir="rtl"
+                    className={`text-right ${
+                      errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""
+                    }`}
+                    value={formData.phone}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    disabled={isSubmitting}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                  )}
+                </div>
 
                 {/* כפתור */}
                 <Button
@@ -299,7 +301,6 @@ export const Contact = () => {
                 </p>
               </form>
             </div>
-
           </div>
         </div>
       </div>
