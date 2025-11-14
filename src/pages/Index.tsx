@@ -1,3 +1,4 @@
+import ScrollPopup from "@/components/ScrollPopup";
 import { Navigation } from "@/components/Navigation";
 import { Hero } from "@/components/Hero";
 import { Problem } from "@/components/Problem";
@@ -10,6 +11,13 @@ import { Footer } from "@/components/Footer";
 
 const Index = () => {
   return (
+     <ScrollPopup />
+
+  {/* כל שאר הסקשנים שלך */}
+  <Hero />
+  <Features />
+  <Contact />
+</>
     <div className="min-h-screen">
       <Navigation />
       <div id="hero">
