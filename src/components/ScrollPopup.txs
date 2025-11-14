@@ -1,0 +1,69 @@
+import { useEffect, useState } from "react";
+
+export const ScrollPopup = () => {
+  const [show, setShow] = useState(false);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  // לא להציג שוב אם המשתמש סגר בעבר
+  useEffect(() => {
+    const dismissed = localStorage.getItem("popupDismissed");
+    if (dismissed === "true") return;
+
+    const handleScroll = () => {
+      const currentScroll = window.scrollY;
+
+      // תנאי הופעה:
+      // המשתמש ירד למטה ואז עלה בבת אחת יותר מ־120px
+      if (currentScroll < lastScrollY - 120 && currentScroll > 150) {
+        setShow(true);
+      }
+
+      setLastScrollY(currentScroll);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [lastScrollY]);
+
+  const closePopup = () => {
+    setShow(false);
+    localStorage.setItem("popupDismissed", "true");
+  };
+
+  if (!show) return null;
+
+  return (
+    <div
+      className="fixed inset-0 bg-black/40 backdrop-blur-sm flex items-center justify-center z-50 animate-fadeIn"
+      onClick={closePopup}
+    >
+      <div
+        className="bg-white p-6 rounded-2xl shadow-xl max-w-[90%] w-[380px] text-center relative animate-slideUp"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* כפתור סגירה */}
+        <button
+          className="absolute top-3 right-3 text-gray-500 hover:text-black text-xl"
+          onClick={closePopup}
+        >
+          ×
+        </button>
+
+        {/* תוכן */}
+        <h2 className="text-2xl font-bold mb-3">רוצים שנעזור לכם לעשות סדר בעסק?</h2>
+        <p className="text-gray-600 mb-5">
+          השאירו פרטים ונתאם שיחת אפיון חינמית ומקצועית
+        </p>
+
+        <a
+          href="#contact"
+          onClick={closePopup}
+          className="block bg-primary text-white py-3 rounded-xl text-lg font-semibold hover:opacity-90 transition"
+        >
+          השארת פרטים
+        </a>
+      </div>
+    </div>
+  );
+};
