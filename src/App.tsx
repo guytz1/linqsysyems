@@ -1,9 +1,3 @@
-import { ScrollPopup } from "@/components/ScrollPopup";
-
-function App() {
-  return (
-    <>
-      <ScrollPopup />
 
       {/* Your site sections */}
       <Hero />
