@@ -1,3 +1,18 @@
+// ולידציה לאימייל
+const validateEmail = (email: string) => {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+};
+
+// ולידציה לטלפון ישראלי
+const validatePhone = (phone: string) => {
+  return /^0?5\d{8}$/.test(phone.replace(/\D/g, "")); 
+};
+
+// ולידציה לשם מלא (לפחות 2 מילים)
+const validateName = (name: string) => {
+  return name.trim().split(" ").length >= 2;
+};
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
