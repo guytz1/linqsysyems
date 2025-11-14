@@ -1,33 +1,18 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 
 const ScrollPopup = () => {
   const [show, setShow] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
-  // שומר את המיקום האחרון כדי לא לגרום לרינדורים אינסופיים
-  const lastScroll = useRef(0);
-
+  // מציג את הפופאפ אחרי 15 שניות שהמשתמש בעמוד
   useEffect(() => {
-    const handleScroll = () => {
-      if (dismissed) return;
+    if (dismissed) return;
 
-      const current = window.scrollY;
+    const timer = setTimeout(() => {
+      setShow(true);
+    }, 15000); // 15 שניות
 
-      // המשתמש יורד יותר מ־500 פיקסלים → מתחילים להקשיב
-      const scrolledEnough = current > 500;
-
-      // המשתמש גולל למעלה מהר → מציגים
-      const scrollingUp = current < lastScroll.current - 120;
-
-      if (scrolledEnough && scrollingUp) {
-        setShow(true);
-      }
-
-      lastScroll.current = current;
-    };
-
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => window.removeEventListener("scroll", handleScroll);
+    return () => clearTimeout(timer);
   }, [dismissed]);
 
   if (!show) return null;
