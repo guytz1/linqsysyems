@@ -42,11 +42,9 @@ export const Contact = () => {
   const titleAnimation = useScrollAnimation();
   const contentAnimation = useScrollAnimation();
 
-  // ------------------ REAL-TIME VALIDATION ------------------
+  // ------------------ ON BLUR VALIDATION ------------------
 
-  const handleNameChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, name: value }));
-
+  const handleNameBlur = (value: string) => {
     if (!validateName(value)) {
       setErrors((prev) => ({
         ...prev,
@@ -57,9 +55,7 @@ export const Contact = () => {
     }
   };
 
-  const handleEmailChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, email: value }));
-
+  const handleEmailBlur = (value: string) => {
     if (!validateEmail(value)) {
       setErrors((prev) => ({
         ...prev,
@@ -70,10 +66,8 @@ export const Contact = () => {
     }
   };
 
-  const handlePhoneChange = (value: string) => {
-    const cleaned = value.replace(/\D/g, ""); // רק ספרות
-    setFormData((prev) => ({ ...prev, phone: cleaned }));
-
+  const handlePhoneBlur = (value: string) => {
+    const cleaned = value.replace(/\D/g, "");
     if (!validatePhone(cleaned)) {
       setErrors((prev) => ({
         ...prev,
@@ -178,7 +172,6 @@ export const Contact = () => {
             <div className="space-y-8">
               <div className="bg-primary/5 p-8 rounded-2xl border border-primary/20">
                 <h3 className="text-2xl font-bold mb-6">מה קורה בשיחה?</h3>
-
                 <div className="space-y-4">
                   <div className="flex gap-3">
                     <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
@@ -225,12 +218,20 @@ export const Contact = () => {
             {/* צד ימין - טופס */}
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
+                
                 {/* שם מלא */}
                 <div>
                   <Input
+                    type="text"
                     placeholder="שם מלא *"
                     value={formData.name}
-                    onChange={(e) => handleNameChange(e.target.value)}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    onBlur={(e) => handleNameBlur(e.target.value)}
                     className={`text-right ${
                       errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
@@ -249,7 +250,13 @@ export const Contact = () => {
                     autoComplete="email"
                     placeholder="אימייל *"
                     value={formData.email}
-                    onChange={(e) => handleEmailChange(e.target.value)}
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        email: e.target.value,
+                      }))
+                    }
+                    onBlur={(e) => handleEmailBlur(e.target.value)}
                     className={`text-right ${
                       errors.email ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
@@ -263,15 +270,21 @@ export const Contact = () => {
                 {/* טלפון */}
                 <div>
                   <Input
-                    type="tel"
+                    type="text"
                     inputMode="tel"
                     placeholder="טלפון *"
+                    value={formData.phone}
                     dir="rtl"
+                    onChange={(e) =>
+                      setFormData((prev) => ({
+                        ...prev,
+                        phone: e.target.value.replace(/\D/g, ""),
+                      }))
+                    }
+                    onBlur={(e) => handlePhoneBlur(e.target.value)}
                     className={`text-right ${
                       errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
-                    value={formData.phone}
-                    onChange={(e) => handlePhoneChange(e.target.value)}
                     disabled={isSubmitting}
                   />
                   {errors.phone && (
@@ -301,6 +314,7 @@ export const Contact = () => {
                 </p>
               </form>
             </div>
+
           </div>
         </div>
       </div>
