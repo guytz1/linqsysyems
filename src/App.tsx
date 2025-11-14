@@ -1,3 +1,20 @@
+import { ScrollPopup } from "@/components/ScrollPopup";
+
+function App() {
+  return (
+    <>
+      <ScrollPopup />
+
+      {/* Your site sections */}
+      <Hero />
+      <Features />
+      <Contact />
+    </>
+  );
+}
+
+
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
