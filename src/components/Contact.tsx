@@ -1,21 +1,21 @@
-// ולידציה לאימייל
+// ------------------ VALIDATION FUNCTIONS ------------------
+
 const validateEmail = (email: string) => {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim());
 };
 
-// ולידציה לטלפון ישראלי
 const validatePhone = (phone: string) => {
-  return /^0?5\d{8}$/.test(phone.replace(/\D/g, "")); 
+  return /^0?5\d{8}$/.test(phone.replace(/\D/g, ""));
 };
 
-// ולידציה לשם מלא (לפחות 2 מילים)
 const validateName = (name: string) => {
   return name.trim().split(" ").length >= 2;
 };
 
+// ----------------------------------------------------------
+
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
@@ -23,11 +23,18 @@ import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 export const Contact = () => {
   const { toast } = useToast();
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
-    message: ""
+    message: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    phone: "",
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -35,41 +42,72 @@ export const Contact = () => {
   const titleAnimation = useScrollAnimation();
   const contentAnimation = useScrollAnimation();
 
+  // ------------------ REAL-TIME VALIDATION ------------------
+
+  const handleNameChange = (value: string) => {
+    setFormData({ ...formData, name: value });
+
+    if (!validateName(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        name: "יש להזין שם מלא (לפחות 2 מילים)",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, name: "" }));
+    }
+  };
+
+  const handleEmailChange = (value: string) => {
+    setFormData({ ...formData, email: value });
+
+    if (!validateEmail(value)) {
+      setErrors((prev) => ({
+        ...prev,
+        email: "אימייל לא תקין",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, email: "" }));
+    }
+  };
+
+  const handlePhoneChange = (value: string) => {
+    // מגביל רק לספרות
+    const cleaned = value.replace(/\D/g, "");
+    setFormData({ ...formData, phone: cleaned });
+
+    if (!validatePhone(cleaned)) {
+      setErrors((prev) => ({
+        ...prev,
+        phone: "מספר טלפון ישראלי לא תקין",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, phone: "" }));
+    }
+  };
+
+  // ------------------ FORM SUBMIT ------------------
+
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  // ולידציות לפני שליחה
-  if (!validateName(formData.name)) {
-    toast({
-      title: "נא להזין שם מלא",
-      description: "יש להזין לפחות שם פרטי ומשפחה",
-      variant: "destructive",
-    });
-    return;
-  }
+    // בדיקה סופית
+    if (!validateName(formData.name) ||
+        !validateEmail(formData.email) ||
+        !validatePhone(formData.phone)) 
+    {
+      toast({
+        title: "שגיאה בטופס",
+        description: "אנא תקנו את השגיאות בשדות המסומנים",
+        variant: "destructive",
+      });
+      return;
+    }
 
-  if (!validateEmail(formData.email)) {
-    toast({
-      title: "אימייל לא תקין",
-      description: "בדוק שהאימייל שהוזן תקין",
-      variant: "destructive",
-    });
-    return;
-  }
-
-  if (!validatePhone(formData.phone)) {
-    toast({
-      title: "מספר טלפון לא תקין",
-      description: "יש להזין מספר טלפון ישראלי תקין",
-      variant: "destructive",
-    });
-    return;
-  }
-
-  setIsSubmitting(true);
+    setIsSubmitting(true);
 
     try {
-      const makeWebhookUrl = "https://hook.eu2.make.com/jw07ir5o4dp7238s5pex16a8cbmovw8n";
+      const makeWebhookUrl =
+        "https://hook.eu2.make.com/jw07ir5o4dp7238s5pex16a8cbmovw8n";
 
       await fetch(makeWebhookUrl, {
         method: "POST",
@@ -81,7 +119,7 @@ export const Contact = () => {
 
       toast({
         title: "תודה על פנייתך!",
-        description: "נחזור אליך בהקדם כדי לתאם שיחת אפיון חינמית",
+        description: "נחזור אליך בהקדם לתיאום שיחת אפיון חינמית",
       });
 
       setFormData({
@@ -90,10 +128,13 @@ export const Contact = () => {
         phone: "",
         message: "",
       });
+
+      setErrors({ name: "", email: "", phone: "" });
+
     } catch (error) {
       toast({
         title: "שגיאה",
-        description: "אירעה שגיאה בשליחת הטופס. אנא נסו שוב.",
+        description: "אירעה תקלה בשליחת הטופס",
         variant: "destructive",
       });
     } finally {
@@ -101,48 +142,73 @@ export const Contact = () => {
     }
   };
 
+  // ------------------ UI ------------------
+
   return (
     <section id="contact" className="py-20 bg-background">
       <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
+
+          {/* כותרת */}
           <div
             ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? "visible" : ""}`}
+            className={`text-center mb-16 scroll-fade-in ${
+              titleAnimation.isVisible ? "visible" : ""
+            }`}
           >
             <h2 className="text-3xl md:text-5xl font-bold mb-8">
-              בואו נתחיל - <span className="text-primary">שיחת אפיון חינם לגמרי</span>
+              בואו נתחיל -{" "}
+              <span className="text-primary">שיחת אפיון חינם לגמרי</span>
             </h2>
             <div className="flex flex-col items-center gap-4">
               <p className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl leading-relaxed">
                 30 דקות שיכולות לשנות את הדרך שבה אתם מנהלים את העסק
               </p>
-              <p className="text-xl md:text-2xl text-primary font-medium">ללא עלות • ללא התחייבות</p>
+              <p className="text-xl md:text-2xl text-primary font-medium">
+                ללא עלות • ללא התחייבות
+              </p>
             </div>
           </div>
 
+          {/* התוכן */}
           <div
             ref={contentAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${contentAnimation.isVisible ? "visible" : ""}`}
+            className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${
+              contentAnimation.isVisible ? "visible" : ""
+            }`}
           >
+            {/* צד שמאל */}
             <div className="space-y-8">
               <div className="bg-primary/5 p-8 rounded-2xl border border-primary/20">
                 <h3 className="text-2xl font-bold mb-6">מה קורה בשיחה?</h3>
+
                 <div className="space-y-4">
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <p className="text-muted-foreground">מכירים את העסק שלכם והאתגרים שאתם מתמודדים איתם</p>
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
+                      מכירים את העסק שלכם והאתגרים שאתם מתמודדים איתם
+                    </p>
                   </div>
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <p className="text-muted-foreground">מזהים את המערכות והכלים הקיימים שלכם</p>
+
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
+                      מזהים את המערכות והכלים הקיימים שלכם
+                    </p>
                   </div>
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <p className="text-muted-foreground">מציעים פתרונות ראשוניים מותאמים אישית</p>
+
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
+                      מציעים פתרונות ראשוניים מותאמים אישית
+                    </p>
                   </div>
-                  <div className="flex gap-3 items-start">
-                    <CheckCircle2 className="h-6 w-6 text-primary flex-shrink-0 mt-1" />
-                    <p className="text-muted-foreground">עונים על כל השאלות שלכם</p>
+
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
+                      עונים על כל השאלות שלכם
+                    </p>
                   </div>
                 </div>
               </div>
@@ -159,43 +225,67 @@ export const Contact = () => {
               </div>
             </div>
 
+            {/* צד ימין - טופס */}
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
 
-                {/* שם */}
-                <Input
-                  placeholder="שם מלא *"
-                  value={formData.name}
-                  onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  required
-                  className="text-right"
-                  disabled={isSubmitting}
-                />
+                {/* שם מלא */}
+                <div>
+                  <Input
+                    placeholder="שם מלא *"
+                    value={formData.name}
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    className={`text-right ${
+                      errors.name ? "border-red-500" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                  )}
+                </div>
 
                 {/* אימייל */}
-                <Input
-                  type="email"
-                  placeholder="אימייל *"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                  required
-                  className="text-right"
-                  disabled={isSubmitting}
-                />
+                <div>
+                  <Input
+                    type="email"
+                    placeholder="אימייל *"
+                    value={formData.email}
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`text-right ${
+                      errors.email ? "border-red-500" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  )}
+                </div>
 
-                {/* טלפון — כוכבית בצד הנכון */}
-                <Input
-                  type="tel"
-                  placeholder={'טלפון \u200E*'}
-                  dir="rtl"
-                  className="text-right"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                  required
-                  disabled={isSubmitting}
-                />
+                {/* טלפון */}
+                <div>
+                  <Input
+                    type="tel"
+                    placeholder={"טלפון \u200E*"}
+                    value={formData.phone}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
+                    className={`text-right ${
+                      errors.phone ? "border-red-500" : ""
+                    }`}
+                    disabled={isSubmitting}
+                  />
+                  {errors.phone && (
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+                  )}
+                </div>
 
-                <Button type="submit" size="lg" className="w-full text-lg py-6" disabled={isSubmitting}>
+                {/* כפתור */}
+                <Button
+                  type="submit"
+                  size="lg"
+                  className="w-full text-lg py-6"
+                  disabled={isSubmitting}
+                >
                   {isSubmitting ? "שולח..." : "שלחו ונחזור אליכם בהקדם"}
                 </Button>
 
@@ -204,15 +294,14 @@ export const Contact = () => {
                   <a
                     href="/privacy-policy"
                     target="_blank"
-                    rel="noopener noreferrer"
                     className="text-primary hover:underline"
                   >
                     מדיניות הפרטיות
-                  </a>{" "}
-                  שלנו
+                  </a>
                 </p>
               </form>
             </div>
+
           </div>
         </div>
       </div>
