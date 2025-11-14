@@ -229,55 +229,50 @@ export const Contact = () => {
             <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
               <form onSubmit={handleSubmit} className="space-y-6">
 
-                {/* שם מלא */}
                 <div>
-                  <Input
-                    placeholder="שם מלא *"
-                    value={formData.name}
-                    onChange={(e) => handleNameChange(e.target.value)}
-                    className={`text-right ${
-                      errors.name ? "border-red-500" : ""
-                    }`}
-                    disabled={isSubmitting}
-                  />
-                  {errors.name && (
-                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-                  )}
-                </div>
+  <Input
+    placeholder="שם מלא *"
+    value={formData.name}
+    onChange={(e) => handleNameChange(e.target.value)}
+    className={`text-right ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+    disabled={isSubmitting}
+  />
+  {errors.name && (
+    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+  )}
+</div>
 
-                {/* אימייל */}
-                <div>
-                  <Input
-                    type="email"
-                    placeholder="אימייל *"
-                    value={formData.email}
-                    onChange={(e) => handleEmailChange(e.target.value)}
-                    className={`text-right ${
-                      errors.email ? "border-red-500" : ""
-                    }`}
-                    disabled={isSubmitting}
-                  />
-                  {errors.email && (
-                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-                  )}
-                </div>
+  <Input
+    type="text"               // ← במקום email
+    inputMode="email"
+    autoComplete="email"
+    placeholder="אימייל *"
+    value={formData.email}
+    onChange={(e) => handleEmailChange(e.target.value)}
+    className={`text-right ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+    disabled={isSubmitting}
+  />
+  {errors.email && (
+    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+  )}
+</div>
 
-                {/* טלפון */}
+
                 <div>
-                  <Input
-                    type="tel"
-                    placeholder={"טלפון \u200E*"}
-                    value={formData.phone}
-                    onChange={(e) => handlePhoneChange(e.target.value)}
-                    className={`text-right ${
-                      errors.phone ? "border-red-500" : ""
-                    }`}
-                    disabled={isSubmitting}
-                  />
-                  {errors.phone && (
-                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-                  )}
-                </div>
+  <Input
+    type="text"
+    inputMode="tel"
+    placeholder={"טלפון \u200E*"}
+    value={formData.phone}
+    onChange={(e) => handlePhoneChange(e.target.value)}
+    className={`text-right ${errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}`}
+    disabled={isSubmitting}
+  />
+  {errors.phone && (
+    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+  )}
+</div>
+
 
                 {/* כפתור */}
                 <Button
