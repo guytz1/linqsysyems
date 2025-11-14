@@ -231,7 +231,7 @@ export const Contact = () => {
 
                 <div>
   <Input
-    placeholder="שם מלא *"
+  placeholder={'שם מלא *\u200E'}
     value={formData.name}
     onChange={(e) => handleNameChange(e.target.value)}
     className={`text-right ${errors.name ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -246,7 +246,7 @@ export const Contact = () => {
     type="text"               // ← במקום email
     inputMode="email"
     autoComplete="email"
-    placeholder="אימייל *"
+  placeholder={'אימייל *\u200E'}
     value={formData.email}
     onChange={(e) => handleEmailChange(e.target.value)}
     className={`text-right ${errors.email ? "border-red-500 focus-visible:ring-red-500" : ""}`}
@@ -262,7 +262,7 @@ export const Contact = () => {
   <Input
     type="text"
     inputMode="tel"
-    placeholder={"טלפון \u200E*"}
+  placeholder={'טלפון *\u200E'}
     value={formData.phone}
     onChange={(e) => handlePhoneChange(e.target.value)}
     className={`text-right ${errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""}`}
