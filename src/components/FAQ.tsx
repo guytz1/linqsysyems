@@ -38,17 +38,19 @@ export const FAQ = () => {
   const accordionAnimation = useScrollAnimation();
   
   return (
-    <section className="py-20 bg-muted/30">
-      <div className="container mx-auto px-4">
+    <section className="section-spacing bg-muted/30 relative">
+      <div className="absolute inset-x-0 top-0 section-divider" />
+      
+      <div className="container mx-auto mobile-container">
         <div className="max-w-3xl mx-auto">
           <div 
             ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`text-center mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
+            className={`text-center mb-12 md:mb-16 scroll-fade-in ${titleAnimation.isVisible ? 'visible' : ''}`}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-6">
+            <h2 className="text-3xl md:text-5xl font-bold mb-6 md:mb-8 leading-tight px-2">
               שאלות נפוצות
             </h2>
-            <p className="text-xl text-muted-foreground">
+            <p className="text-lg md:text-xl text-muted-foreground leading-relaxed px-4">
               התשובות לשאלות שמעסיקות את רוב הלקוחות שלנו
             </p>
           </div>
@@ -57,17 +59,17 @@ export const FAQ = () => {
             ref={accordionAnimation.ref as React.RefObject<HTMLDivElement>}
             className={`scroll-fade-in ${accordionAnimation.isVisible ? 'visible' : ''}`}
           >
-            <Accordion type="single" collapsible className="space-y-4">
+            <Accordion type="single" collapsible className="space-y-4 md:space-y-5">
             {faqs.map((faq, index) => (
               <AccordionItem 
                 key={index} 
                 value={`item-${index}`}
-                className="bg-background border border-border rounded-xl px-6 shadow-soft"
+                className="bg-background border border-border rounded-xl px-5 md:px-6 shadow-soft"
               >
-                <AccordionTrigger className="text-right text-lg font-bold hover:text-primary">
+                <AccordionTrigger className="text-right text-base md:text-lg font-bold hover:text-primary py-5 md:py-6">
                   {faq.question}
                 </AccordionTrigger>
-                <AccordionContent className="text-muted-foreground text-right leading-relaxed pt-2">
+                <AccordionContent className="text-sm md:text-base text-muted-foreground text-right leading-relaxed pt-2 pb-5 md:pb-6">
                   {faq.answer}
                 </AccordionContent>
               </AccordionItem>
@@ -76,6 +78,8 @@ export const FAQ = () => {
           </div>
         </div>
       </div>
+      
+      <div className="absolute inset-x-0 bottom-0 section-divider" />
     </section>
   );
 };
