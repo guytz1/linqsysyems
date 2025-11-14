@@ -11,29 +11,29 @@ export const Hero = () => {
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-gradient-to-b from-primary/5 to-background">
       <div className="absolute inset-0 bg-grid-pattern opacity-5" />
       
-      <div className="container mx-auto mobile-container py-24 md:py-20 relative z-10">
+      <div className="container mx-auto px-4 py-20 relative z-10">
         <div className="max-w-4xl mx-auto text-center animate-fade-in">
-          <div className="mb-10 md:mb-8 flex justify-center scroll-scale visible">
+          <div className="mb-8 flex justify-center">
             <img 
               src={linqIcon} 
               alt="Linq Systems" 
-              className="h-24 md:h-24 object-contain rounded-2xl shadow-elegant"
+              className="h-20 md:h-24 object-contain rounded-2xl"
             />
           </div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-8 md:mb-6 leading-tight px-2">
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             מחברים בין המערכות שלכם
-            <span className="block text-primary mt-3 md:mt-2">ליצירת עסק חכם ויעיל</span>
+            <span className="block text-primary mt-2">ליצירת עסק חכם ויעיל</span>
           </h1>
           
-          <p className="text-lg md:text-xl lg:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed px-4">
+          <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed">
             אפיון, יישום והטמעה של מערכות CRM ואוטומציות מתקדמות שמחברות את כל הכלים הדיגיטליים שלכם למערכת אחת חכמה
           </p>
           
-          <div className="flex flex-col sm:flex-row gap-5 md:gap-4 justify-center items-center px-4">
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Button 
               size="lg" 
-              className="text-lg px-10 py-7 md:py-6 shadow-elegant hover:shadow-xl transition-all w-full sm:w-auto"
+              className="text-lg px-8 py-6 shadow-elegant hover:shadow-xl transition-all"
               onClick={scrollToContact}
             >
               לקביעת שיחת אפיון חינם לגמרי
@@ -41,7 +41,7 @@ export const Hero = () => {
             </Button>
           </div>
           
-          <p className="text-base md:text-sm text-muted-foreground mt-8 md:mt-6 px-4">
+          <p className="text-sm text-muted-foreground mt-6">
             ללא התחייבות • ללא עלות • 30 דקות שישנו את העסק שלכם
           </p>
         </div>

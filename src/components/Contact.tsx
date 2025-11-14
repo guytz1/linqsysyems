@@ -20,7 +20,6 @@ import { useToast } from "@/hooks/use-toast";
 import { Phone, Mail, CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { useScrollAnimation } from "@/hooks/useScrollAnimation";
-import { Link } from "react-router-dom";
 
 export const Contact = () => {
   const { toast } = useToast();
@@ -43,9 +42,11 @@ export const Contact = () => {
   const titleAnimation = useScrollAnimation();
   const contentAnimation = useScrollAnimation();
 
-  // ------------------ ON BLUR VALIDATION ------------------
+  // ------------------ REAL-TIME VALIDATION ------------------
 
-  const handleNameBlur = (value: string) => {
+  const handleNameChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, name: value }));
+
     if (!validateName(value)) {
       setErrors((prev) => ({
         ...prev,
@@ -56,7 +57,9 @@ export const Contact = () => {
     }
   };
 
-  const handleEmailBlur = (value: string) => {
+  const handleEmailChange = (value: string) => {
+    setFormData((prev) => ({ ...prev, email: value }));
+
     if (!validateEmail(value)) {
       setErrors((prev) => ({
         ...prev,
@@ -67,8 +70,10 @@ export const Contact = () => {
     }
   };
 
-  const handlePhoneBlur = (value: string) => {
-    const cleaned = value.replace(/\D/g, "");
+  const handlePhoneChange = (value: string) => {
+    const cleaned = value.replace(/\D/g, ""); // רק ספרות
+    setFormData((prev) => ({ ...prev, phone: cleaned }));
+
     if (!validatePhone(cleaned)) {
       setErrors((prev) => ({
         ...prev,
@@ -138,27 +143,25 @@ export const Contact = () => {
   // ------------------ UI ------------------
 
   return (
-    <section id="contact" className="section-spacing bg-background relative">
-      <div className="absolute inset-x-0 top-0 section-divider" />
-      
-      <div className="container mx-auto mobile-container">
+    <section id="contact" className="py-20 bg-background">
+      <div className="container mx-auto px-4">
         <div className="max-w-5xl mx-auto">
           {/* כותרת */}
           <div
             ref={titleAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`text-center mb-12 md:mb-16 scroll-fade-in ${
+            className={`text-center mb-16 scroll-fade-in ${
               titleAnimation.isVisible ? "visible" : ""
             }`}
           >
-            <h2 className="text-3xl md:text-5xl font-bold mb-8 md:mb-10 leading-tight px-2">
+            <h2 className="text-3xl md:text-5xl font-bold mb-8">
               בואו נתחיל -{" "}
               <span className="text-primary">שיחת אפיון חינם לגמרי</span>
             </h2>
-            <div className="flex flex-col items-center gap-4 md:gap-5">
-              <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-foreground max-w-3xl leading-relaxed px-4">
+            <div className="flex flex-col items-center gap-4">
+              <p className="text-2xl md:text-3xl font-semibold text-foreground max-w-3xl leading-relaxed">
                 30 דקות שיכולות לשנות את הדרך שבה אתם מנהלים את העסק
               </p>
-              <p className="text-lg md:text-xl lg:text-2xl text-primary font-medium px-4">
+              <p className="text-xl md:text-2xl text-primary font-medium">
                 ללא עלות • ללא התחייבות
               </p>
             </div>
@@ -167,83 +170,74 @@ export const Contact = () => {
           {/* התוכן */}
           <div
             ref={contentAnimation.ref as React.RefObject<HTMLDivElement>}
-            className={`grid md:grid-cols-2 gap-6 md:gap-12 scroll-fade-in ${
+            className={`grid md:grid-cols-2 gap-12 scroll-fade-in ${
               contentAnimation.isVisible ? "visible" : ""
             }`}
           >
             {/* צד שמאל */}
-            <div className="space-y-6 md:space-y-8">
-              <div className="bg-primary/5 p-6 md:p-8 rounded-2xl border border-primary/20 shadow-soft">
-                <h3 className="text-xl md:text-2xl font-bold mb-5 md:mb-6 leading-snug">מה קורה בשיחה?</h3>
-                <div className="space-y-4 md:space-y-5">
-                  <div className="flex gap-3 md:gap-4">
-                    <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-primary mt-1 flex-shrink-0" />
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+            <div className="space-y-8">
+              <div className="bg-primary/5 p-8 rounded-2xl border border-primary/20">
+                <h3 className="text-2xl font-bold mb-6">מה קורה בשיחה?</h3>
+
+                <div className="space-y-4">
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
                       מכירים את העסק שלכם והאתגרים שאתם מתמודדים איתם
                     </p>
                   </div>
 
-                  <div className="flex gap-3 md:gap-4">
-                    <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-primary mt-1 flex-shrink-0" />
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
                       מזהים את המערכות והכלים הקיימים שלכם
                     </p>
                   </div>
 
-                  <div className="flex gap-3 md:gap-4">
-                    <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-primary mt-1 flex-shrink-0" />
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
                       מציעים פתרונות ראשוניים מותאמים אישית
                     </p>
                   </div>
 
-                  <div className="flex gap-3 md:gap-4">
-                    <CheckCircle2 className="h-5 w-5 md:h-6 md:w-6 text-primary mt-1 flex-shrink-0" />
-                    <p className="text-sm md:text-base text-muted-foreground leading-relaxed">
+                  <div className="flex gap-3">
+                    <CheckCircle2 className="h-6 w-6 text-primary mt-1" />
+                    <p className="text-muted-foreground">
                       עונים על כל השאלות שלכם
                     </p>
                   </div>
                 </div>
               </div>
 
-              <div className="space-y-4 md:space-y-5 bg-accent/30 p-6 md:p-8 rounded-2xl border border-primary/10 shadow-soft">
-                <div className="flex items-center gap-3 md:gap-4">
-                  <Phone className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span className="text-base md:text-lg">054-3521115</span>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <Phone className="h-5 w-5 text-primary" />
+                  <span className="text-lg">054-3521115</span>
                 </div>
-                <div className="flex items-center gap-3 md:gap-4">
-                  <Mail className="h-5 w-5 text-primary flex-shrink-0" />
-                  <span className="text-sm md:text-base break-all">linq.systems.team@gmail.com</span>
+                <div className="flex items-center gap-3">
+                  <Mail className="h-5 w-5 text-primary" />
+                  <span className="text-lg">linq.systems.team@gmail.com</span>
                 </div>
               </div>
             </div>
 
             {/* צד ימין - טופס */}
-            <div className="bg-accent/50 p-6 md:p-8 rounded-2xl border border-primary/20 shadow-soft">
-              <form onSubmit={handleSubmit} className="space-y-5 md:space-y-6">
-                
+            <div className="bg-accent/50 p-8 rounded-2xl border border-primary/20">
+              <form onSubmit={handleSubmit} className="space-y-6">
                 {/* שם מלא */}
                 <div>
                   <Input
-                    type="text"
                     placeholder="שם מלא *"
                     value={formData.name}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        name: e.target.value,
-                      }))
-                    }
-                    onBlur={(e) => handleNameBlur(e.target.value)}
-                    className={`text-right text-base ${
+                    onChange={(e) => handleNameChange(e.target.value)}
+                    className={`text-right ${
                       errors.name ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
                     disabled={isSubmitting}
                   />
                   {errors.name && (
-                    <p className="text-red-500 text-xs md:text-sm mt-2 text-right leading-relaxed">
-                      {errors.name}
-                    </p>
+                    <p className="text-red-500 text-sm mt-1">{errors.name}</p>
                   )}
                 </div>
 
@@ -255,49 +249,33 @@ export const Contact = () => {
                     autoComplete="email"
                     placeholder="אימייל *"
                     value={formData.email}
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        email: e.target.value,
-                      }))
-                    }
-                    onBlur={(e) => handleEmailBlur(e.target.value)}
-                    className={`text-right text-base ${
+                    onChange={(e) => handleEmailChange(e.target.value)}
+                    className={`text-right ${
                       errors.email ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
                     disabled={isSubmitting}
                   />
                   {errors.email && (
-                    <p className="text-red-500 text-xs md:text-sm mt-2 text-right leading-relaxed">
-                      {errors.email}
-                    </p>
+                    <p className="text-red-500 text-sm mt-1">{errors.email}</p>
                   )}
                 </div>
 
                 {/* טלפון */}
                 <div>
                   <Input
-                    type="text"
+                    type="tel"
                     inputMode="tel"
                     placeholder="טלפון *"
-                    value={formData.phone}
                     dir="rtl"
-                    onChange={(e) =>
-                      setFormData((prev) => ({
-                        ...prev,
-                        phone: e.target.value.replace(/\D/g, ""),
-                      }))
-                    }
-                    onBlur={(e) => handlePhoneBlur(e.target.value)}
-                    className={`text-right text-base ${
+                    className={`text-right ${
                       errors.phone ? "border-red-500 focus-visible:ring-red-500" : ""
                     }`}
+                    value={formData.phone}
+                    onChange={(e) => handlePhoneChange(e.target.value)}
                     disabled={isSubmitting}
                   />
                   {errors.phone && (
-                    <p className="text-red-500 text-xs md:text-sm mt-2 text-right leading-relaxed">
-                      {errors.phone}
-                    </p>
+                    <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
                   )}
                 </div>
 
@@ -305,29 +283,27 @@ export const Contact = () => {
                 <Button
                   type="submit"
                   size="lg"
-                  className="w-full text-base md:text-lg py-6 md:py-7 shadow-elegant hover:shadow-xl transition-all"
+                  className="w-full text-lg py-6"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? "שולח..." : "שלחו ונחזור אליכם בהקדם"}
                 </Button>
 
-                <p className="text-xs md:text-sm text-muted-foreground text-center leading-relaxed px-2">
+                <p className="text-xs text-muted-foreground text-center">
                   בשליחת הטופס אתם מאשרים שקראתם את{" "}
-                  <Link
-                    to="/privacy-policy"
+                  <a
+                    href="/privacy-policy"
+                    target="_blank"
                     className="text-primary hover:underline"
                   >
                     מדיניות הפרטיות
-                  </Link>
+                  </a>
                 </p>
               </form>
             </div>
-
           </div>
         </div>
       </div>
-      
-      <div className="absolute inset-x-0 bottom-0 section-divider" />
     </section>
   );
 };
