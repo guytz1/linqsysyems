@@ -68,38 +68,6 @@ export const Contact = () => {
 
   setIsSubmitting(true);
 
-  try {
-    const makeWebhookUrl = "https://hook.eu2.make.com/jw07ir5o4dp7238s5pex16a8cbmovw8n";
-
-    await fetch(makeWebhookUrl, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(formData),
-    });
-
-    toast({
-      title: "תודה על פנייתך!",
-      description: "נחזור אליך בהקדם כדי לתאם שיחת אפיון חינמית",
-    });
-
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
-  } catch (error) {
-    toast({
-      title: "שגיאה",
-      description: "אירעה שגיאה בשליחת הטופס. אנא נסו שוב.",
-      variant: "destructive",
-    });
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-
     try {
       const makeWebhookUrl = "https://hook.eu2.make.com/jw07ir5o4dp7238s5pex16a8cbmovw8n";
 
